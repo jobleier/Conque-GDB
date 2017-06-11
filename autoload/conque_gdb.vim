@@ -58,6 +58,9 @@ let s:py = ''
 " How to execute gdb
 let s:gdb_command = ''
 
+" Arguments to execute gdb with
+let s:gdb_args = ''
+
 " true if gdb supports python
 let g:conque_gdb_gdb_py_support = 0
 
@@ -377,6 +380,11 @@ function! s:get_gdb_command()
     return s:get_win_gdb()
 endfunction
 
+" Return arguments for gdb
+function! s:get_gdb_args()
+    return g:ConqueGdb_GdbArgs
+endfunction
+
 " Open a new gdb terminal.
 " If a gdb terminal is already running then open this and do not open a new one.
 function! conque_gdb#open(...)
@@ -426,7 +434,7 @@ function! conque_gdb#open(...)
             return
         endif
 
-        let l:gdb_cmd = s:gdb_command . l:extra . l:user_args
+        let l:gdb_cmd = s:gdb_command . l:extra . s:gdb_args . l:user_args
         let s:is_gdb_startup = 1
         try
             let s:gdb = conque_term#open(l:gdb_cmd, l:start_cmds, get(a:000, 2, 0), get(a:000, 3, 1), s:term_object)
@@ -590,6 +598,7 @@ function! conque_gdb#load_python()
         endif
     endif
     let s:gdb_command = s:get_gdb_command()
+    let s:gdb_args = s:get_gdb_args()
 endfunction
 
 " Change path to GDB executable at runtime.
@@ -600,6 +609,7 @@ function! conque_gdb#change_gdb_exe(gdb_path)
         let g:ConqueGdb_GdbExe = a:gdb_path
     endif
     let s:gdb_command = s:get_gdb_command()
+    let s:gdb_args = s:get_gdb_args()
 endfunction
 
 call conque_term#register_function('after_startup', 'conque_gdb#after_startup')

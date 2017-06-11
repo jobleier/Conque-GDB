@@ -30,6 +30,11 @@ if !exists('g:ConqueGdb_GdbExe')
     let g:ConqueGdb_GdbExe = ''
 endif
 
+" Option to define arguments to run gdb with
+if !exists('g:ConqueGdb_GdbArgs')
+    let g:ConqueGdb_GdbArgs = ''
+endif
+
 " Option to choose leader key to execute gdb commands.
 if !exists('g:ConqueGdb_Leader')
     let g:ConqueGdb_Leader = '<Leader>'
